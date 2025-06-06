@@ -26,23 +26,22 @@ class Missile:
 
 class Fighter:
     def __init__(self, screen):
-        # Store the screen to an instance variable.
-        # Load the file  "fighter.png"  as the image
-        # Set the x instance variable as the screen width / 2 - image width / 2
-        # Set the y instance variable as the screen height - image height
-        # Already done   self.missiles   to the empty list. 
-        # Set the colorkey to white (it has a white background that needs removed) using the method set_colorkey
         self.missiles = []
+        self.screen = screen
+        self.x = screen.get_width() / 2 - self.image.get_width() / 2
+        self.y = screen.get_height() - self.image.get_height()
+        self.image.set_colorkey((0, 0, 0))
+        self.image = pygame.image.load("/Users/henrylevinson/hulman/remaking-individual-repo-HenryL574K/04-Raindrops/Mike_umbrella.png", "/Users/henrylevinson/hulman/remaking-individual-repo-HenryL574K/07-SpaceInvaders/fighter.png").convert_alpha()
+
 
     def move(self, move_amount_x):
         # Move this Fighter by the move_amount_x
         #   Limit the range from -self.image.get_width() / 2 to
         #                        self.screen.get_width() - self.image.get_width() / 2
-        pass
+        self.x += move_amount_x
 
     def draw(self):
-        # Draw this Fighter, using its image at its current (x, y) position.
-        pass
+        self.screem.blit(self.image, (self.x, self.y))
 
     def fire(self):
         # Construct a new Missile self.image.get_width() / 2 pixels to the right of this Fighter's x position.
