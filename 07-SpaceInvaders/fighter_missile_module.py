@@ -3,56 +3,48 @@ import sys
 
 class Missile:
     def __init__(self, screen, x):
-        # Store the data.  Initialize:   y to 591   and   has_exploded to False.
-        # Note: the 591 comes from the screen height (650) minus the ship image height (59).  Best practice would be to
-        #   pass in that value in case the ship image or screen height changes, but simplified here to always be 591.
-        pass
+        self.screen = screen
+        self.x = x
+        self.y = 591  # Hardcoded starting position
+        self.has_exploded = False
 
     def move(self):
-        # Make self.y 5 smaller than it was (which will cause the Missile to move UP).
-        # Note: you could've instead passed in a speed when you made a Missle, but all missles in the game are the same
-        #   speed, so just using a hardcoded 5 is fine.
-        pass
+        self.y -= 5  # Move the missile up by 5 pixels
 
     def draw(self):
-        # Draw a vertical red (or green) line on the screen for the missile, 8 pixels long,  4 pixels thick
-        #   where the line starts at the current position of this Missile.
-        pass
+        pygame.draw.line(self.screen, (255, 0, 0), (self.x, self.y), (self.x, self.y - 8), 4)
 
     def is_off_screen(self):
-        # Return true if the y value of the missle is less than 0 (or -8 depending how how you draw) i.e. off the screen
-        pass
+        return self.y < 0  # Return True if the missile is off the screen
 
 
 class Fighter:
     def __init__(self, screen):
         self.missiles = []
         self.screen = screen
+        self.image = pygame.image.load("/Users/henrylevinson/hulman/remaking-individual-repo-HenryL574K/07-SpaceInvaders/fighter.png").convert_alpha()
+        self.image.set_colorkey((0, 0, 0))
         self.x = screen.get_width() / 2 - self.image.get_width() / 2
         self.y = screen.get_height() - self.image.get_height()
-        self.image.set_colorkey((0, 0, 0))
-        self.image = pygame.image.load("/Users/henrylevinson/hulman/remaking-individual-repo-HenryL574K/04-Raindrops/Mike_umbrella.png", "/Users/henrylevinson/hulman/remaking-individual-repo-HenryL574K/07-SpaceInvaders/fighter.png").convert_alpha()
-
 
     def move(self, move_amount_x):
-        # Move this Fighter by the move_amount_x
-        #   Limit the range from -self.image.get_width() / 2 to
-        #                        self.screen.get_width() - self.image.get_width() / 2
         self.x += move_amount_x
+        self.x = max(-self.image.get_width() / 2, min(self.x, self.screen.get_width() - self.image.get_width() / 2))
 
     def draw(self):
-        self.screem.blit(self.image, (self.x, self.y))
+        self.screen.blit(self.image, (self.x, self.y))
 
     def fire(self):
-        # Construct a new Missile self.image.get_width() / 2 pixels to the right of this Fighter's x position.
-        # Append that Missile to this Fighter's list of Missile objects.
-        pass
+        missile_x = self.x + self.image.get_width() / 2
+        missile = Missile(self.screen, missile_x)
+        self.missiles.append(missile)
 
     def remove_exploded_missiles(self):
-        # Already complete
         for k in range(len(self.missiles) - 1, -1, -1):
             if self.missiles[k].has_exploded or self.missiles[k].y < -8:
                 del self.missiles[k]
+
+
 
 
 def main():
@@ -66,7 +58,6 @@ def main():
     while True:
         clock.tick(60)
         for event in pygame.event.get():
-            # Doing something once when a key is PRESSED
             if event.type == pygame.KEYDOWN:
                 pressed_keys = pygame.key.get_pressed()
                 if pressed_keys[pygame.K_SPACE]:
@@ -74,7 +65,6 @@ def main():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        # Doing something continually when a key is HELD DOWN
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[pygame.K_LEFT]:
             fighter.move(-5)
@@ -90,6 +80,5 @@ def main():
         pygame.display.update()
 
 
-# Testing the classes
 if __name__ == "__main__":
     main()
