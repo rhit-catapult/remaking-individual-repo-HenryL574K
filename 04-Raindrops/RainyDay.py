@@ -1,8 +1,7 @@
-import pygame
-import sys
-import time  # Note this!
-import random  # Note this!
-
+import pygame, sys, time, random
+# import RaindropModule as Raindrop
+# import CloudModule as Cloud
+# import HeroModule as Hero
 
 class Raindrop:
     def __init__(self, screen: pygame.Surface, x, y):
@@ -25,7 +24,6 @@ class Raindrop:
     def draw(self):
         """ Draws this sprite onto the screen. """
         pygame.draw.line(self.screen, (0, 0, 225), (self.x, self.y), (self.x, self.y + 5), 2)
-
 
 class Hero:
     def __init__(self, screen, x, y, with_umbrella_filename, without_umbrella_filename):
